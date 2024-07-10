@@ -25,6 +25,13 @@ public class Klientas {
         this.numeris = numeris;
     }
 
+    public Klientas(String vardas, String pavarde, String elPastas, long numeris) {
+        this.vardas = vardas;
+        this.pavarde = pavarde;
+        this.elPastas = elPastas;
+        this.numeris = numeris;
+    }
+
     public Klientas() {
     }
 
@@ -74,5 +81,16 @@ public class Klientas {
 
     public void setSlaptazodis(String slaptazodis) {
         this.slaptazodis = slaptazodis;
+    }
+
+    @Override
+    public String toString() {
+        return "Klientas{" +
+                "id=" + id +
+                ", vardas='" + vardas + '\'' +
+                ", pavarde='" + pavarde + '\'' +
+                ", elPastas='" + elPastas + '\'' +
+                ", numeris=" + numeris +
+                '}';
     }
 }

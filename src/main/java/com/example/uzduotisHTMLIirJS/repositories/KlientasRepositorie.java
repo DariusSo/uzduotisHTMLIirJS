@@ -6,6 +6,8 @@ import com.example.uzduotisHTMLIirJS.utils.Connect;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class KlientasRepositorie {
     public void addClient(Klientas k) throws SQLException {
@@ -20,7 +22,7 @@ public class KlientasRepositorie {
     }
     public Klientas getClient(String elPastas) throws SQLException {
         Klientas k = null;
-        PreparedStatement ps = Connect.SQLConnection("SELECT * FROM klientai WHERE el_pastas = ? AND slaptazodis = ? LIMIT 1");
+        PreparedStatement ps = Connect.SQLConnection("SELECT * FROM klientai WHERE el_pastas = ? LIMIT 1");
         ps.setString(1, elPastas);
         ResultSet rs = ps.executeQuery();
         if(rs.next()){
@@ -28,5 +30,31 @@ public class KlientasRepositorie {
                     rs.getString("pavarde"), rs.getString("el_pastas"), rs.getLong("numeris"));
         }
         return k;
+    }
+    public List<Klientas> getClientList() throws SQLException {
+        List<Klientas> clientList = new ArrayList<>();
+        PreparedStatement ps = Connect.SQLConnection("SELECT * FROM klientai");
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            Klientas k = new Klientas(rs.getInt("id"), rs.getString("vardas"), rs.getString("pavarde"),
+                    rs.getString("el_pastas"), rs.getLong("numeris"));
+            clientList.add(k);
+        }
+        return clientList;
+    }
+    public void deleteClient(int id) throws SQLException {
+        PreparedStatement ps = Connect.SQLConnection("DELETE FROM klientai WHERE id = ?");
+        ps.setInt(1, id);
+        ps.execute();
+    }
+    public void modifyClient(Klientas k) throws SQLException {
+        PreparedStatement ps = Connect.SQLConnection("UPDATE klientai SET vardas = ?, pavarde = ?, el_pastas = ?, numeris = ?" +
+                " WHERE id = ?");
+        ps.setString(1, k.getVardas());
+        ps.setString(2, k.getPavarde());
+        ps.setString(3, k.getElPastas());
+        ps.setLong(4, k.getNumeris());
+        ps.setInt(5, k.getId());
+        ps.execute();
     }
 }
